@@ -1,0 +1,4 @@
+*.docset
+
+/.idea/
+/log/
