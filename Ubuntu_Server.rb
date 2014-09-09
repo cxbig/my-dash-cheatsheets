@@ -9,29 +9,26 @@ cheatsheet do
     id 'apt-get'
 
     entry do
-      name 'apt-get | change resource mirror server'
+      name '### apt-get | Change resource mirror server'
       notes <<-'NOTE'
-### Check your Ubuntu version
-
+#### Check your Ubuntu version
 ```
-# cat /etc/issue
-```
-
-### Backup config file
-
-```
-# cp /etc/apt/sources.list /etc/apt/sources.list.old
+cat /etc/issue
 ```
 
-### Change the file
-
+#### Backup config file
 ```
-# vi /etc/apt/sources.list
+cp /etc/apt/sources.list /etc/apt/sources.list.old
 ```
 
-### by this content
-
+#### Change the file
 ```
+vi /etc/apt/sources.list
+```
+
+#### With this content
+```
+# oschina.net, Ubuntu 14.04
 deb http://mirrors.oschina.net/ubuntu/ trusty main restricted universe multiverse
 deb http://mirrors.oschina.net/ubuntu/ trusty-backports main restricted universe multiverse
 deb http://mirrors.oschina.net/ubuntu/ trusty-proposed main restricted universe multiverse
@@ -44,55 +41,101 @@ deb-src http://mirrors.oschina.net/ubuntu/ trusty-security main restricted unive
 deb-src http://mirrors.oschina.net/ubuntu/ trusty-updates main restricted universe multiverse
 ```
 
-_This sample is from `oschina.net`, for `Ubuntu 14.04`_
-
 _For more mirror link in `oschina.net` click [here](http://mirrors.oschina.net/help/ubuntu.html)_
       NOTE
     end
 
     entry do
-      name 'apt-get | update'
+      name '### apt-get | Update'
       notes <<-'NOTE'
-### Create file and fill up the content
-
+#### Create file
 ```
-~# vi apt.sh
+vi /root/apt.sh
+```
 
-// file content:
-
+#### Fill up the content
+```
 #!/bin/bash
 apt-get update
 apt-get upgrade -y
 apt-get autoclean
 ```
 
-### Then, update Ubuntu Server by one command
-
+#### Then, update Ubuntu Server by one command
 ```
-~# sh apt.sh
+sh /root/apt.sh
 ```
       NOTE
     end
   end
 
   category do
-    id 'user'
+    id 'DPKG'
 
     entry do
-      name 'User - Create'
+      name '### DPKG | List all installed packages'
       notes <<-'NOTE'
 ```
-# adduser cxbig
+dpkg --get-selections
 ```
       NOTE
     end
   end
 
   category do
-    id 'apache2'
+    id 'User'
 
     entry do
-      name 'Apache | Basic VirtualHost configuration'
+      name '### User | Create'
+      notes <<-'NOTE'
+```
+adduser cxbig
+```
+      NOTE
+    end
+  end
+
+
+  category do
+    id 'Mysql'
+
+    entry do
+      name '### Mysql | Install Mysql Server 5.6'
+      notes <<-'NOTE'
+#### Install command
+```
+apt-get install -y mysql-server-5.6
+```
+      NOTE
+    end
+
+    entry do
+      name '### Mysql | Security configuration'
+      notes <<-'NOTE'
+#### Security command
+```
+mysql_secure_installation
+```
+
+_Just following the process, finish the configuration_
+      NOTE
+    end
+  end
+
+  category do
+    id 'Apache2'
+
+    entry do
+      name '### Apache2 | Installation'
+      notes <<-'NOTE'
+```
+apt-get install -y apache2
+```
+      NOTE
+    end
+
+    entry do
+      name '### Apache2 | Basic VirtualHost configuration'
       notes <<-'NOTE'
 ```
 <VirtualHost *:80>
@@ -112,6 +155,19 @@ apt-get autoclean
   ErrorLog  /var/www/html/error.log
   CustomLog /var/www/html/access.log combined
 </VirtualHost>
+```
+      NOTE
+    end
+  end
+
+  category do
+    id 'PHP'
+
+    entry do
+      name '### PHP | Installation'
+      notes <<-'NOTE'
+```
+apt-get install -y php5 php5-adodb php5-cgi php5-curl php5-fpm php5-gd php5-geoip php5-imagick php5-intl php5-mcrypt php5-mysql php5-oauth php5-odbc php5-redis php5-sqlite php5-tidy php5-xdebug php5-xmlrpc libapache2-mod-php5
 ```
       NOTE
     end
