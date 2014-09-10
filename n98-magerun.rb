@@ -6,6 +6,8 @@ cheatsheet do
   introduction <<-'NOTE'
 **n98-magerun.phar** is a powerful Magento CLI tool
 
+Github: [netz98/n98-magerun](https://github.com/netz98/n98-magerun)
+
 version: `1.91.0`
   NOTE
 
