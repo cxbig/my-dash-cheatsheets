@@ -171,6 +171,41 @@ apt-get install -y php5 php5-adodb php5-cgi php5-curl php5-fpm php5-gd php5-geoi
 ```
       NOTE
     end
+
+    entry do
+      name '### PHP | Get basic information'
+      notes <<-'NOTE'
+#### Get PHP version
+```
+php -v
+```
+
+#### Get enabled PHP module
+```
+php -m
+```
+
+#### Get PHP ini information
+```
+php -i
+```
+      NOTE
+    end
+
+    entry do
+      name '### PHP | Enable `mcrypt` module'
+      notes <<-'NOTE'
+#### Enable module
+```
+php5enmod mcrypt
+```
+
+#### Restart apache2 service
+```
+service apache2 restart
+```
+      NOTE
+    end
   end
 
 end

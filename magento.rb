@@ -25,4 +25,20 @@ Mage::getSingleton('adminhtml/session_quote')->getQuote();
       NOTE
     end
   end
+
+  category do
+    id 'MySQL snapshot'
+
+    entry do
+      name '### Base URL'
+      notes <<-'NOTE'
+```
+UPDATE `core_config_data`
+SET `value` = '{{base_url}}'
+WHERE `scope` = 'default'
+  AND `path` in ('web/unsecure/base_url', 'web/secure/base_url');
+```
+      NOTE
+    end
+  end
 end
