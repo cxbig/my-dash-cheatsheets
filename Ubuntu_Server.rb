@@ -83,6 +83,30 @@ dpkg --get-selections
   end
 
   category do
+    id 'System'
+
+    entry do
+      name '### System | Get last system reboot time'
+      notes <<-'NOTE'
+#### 1
+```
+last reboot
+```
+
+#### 2
+```
+who -b
+```
+
+#### 3
+```
+uptime
+```
+      NOTE
+    end
+  end
+
+  category do
     id 'User'
 
     entry do
