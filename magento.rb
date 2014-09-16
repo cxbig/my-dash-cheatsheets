@@ -8,10 +8,26 @@ This is collection of Magento, list all shortcuts
   NOTE
 
   category do
+    id 'MySQL snapshot'
+
+    entry do
+      name '### Base URL'
+      notes <<-'NOTE'
+```
+UPDATE `core_config_data`
+SET `value` = '{{base_url}}'
+WHERE `scope` = 'default'
+  AND `path` in ('web/unsecure/base_url', 'web/secure/base_url');
+```
+      NOTE
+    end
+  end
+
+  category do
     id 'Session'
 
     entry do
-      name '### Quote session'
+      name '### Get quote session'
       notes <<-'NOTE'
 #### Front-end
 ```
@@ -27,17 +43,32 @@ Mage::getSingleton('adminhtml/session_quote')->getQuote();
   end
 
   category do
-    id 'MySQL snapshot'
+    id 'System'
 
     entry do
-      name '### Base URL'
+      name '### Config validation'
       notes <<-'NOTE'
+#### Validation
+
+For each field, you can add a Validation definition
+
 ```
-UPDATE `core_config_data`
-SET `value` = '{{base_url}}'
-WHERE `scope` = 'default'
-  AND `path` in ('web/unsecure/base_url', 'web/secure/base_url');
+<validate>...</validate>
 ```
+      NOTE
+    end
+
+    entry do
+      name '### Config validation list'
+      notes <<-'NOTE'
+#### Validation list
+
+```
+validate-number
+validate-zero-or-greater
+```
+
+_to be continue..._
       NOTE
     end
   end

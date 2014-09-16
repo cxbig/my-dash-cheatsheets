@@ -27,7 +27,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Options'
+    id 'Common options'
 
     entry do
       command '--help'
@@ -131,7 +131,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Arguments - admin'
+    id 'Admin'
 
     entry do
       command 'admin:notifications'
@@ -160,7 +160,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - cache'
+    id 'Cache'
 
     entry do
       command 'cache:clean'
@@ -199,7 +199,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - composer'
+    id 'Composer'
 
     entry do
       command 'composer:diagnose'
@@ -238,7 +238,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - config'
+    id 'Config'
 
     entry do
       command 'config:delete'
@@ -267,7 +267,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - customer'
+    id 'Customer'
 
     entry do
       command 'customer:change-password'
@@ -301,7 +301,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - db'
+    id 'DB'
 
     entry do
       command 'db:console'
@@ -345,7 +345,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - design'
+    id 'Design'
 
     entry do
       command 'design:demo-notice'
@@ -354,7 +354,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - dev'
+    id 'Dev'
 
     entry do
       command 'dev:class:lookup'
@@ -394,6 +394,37 @@ version: `1.91.0`
     entry do
       command 'dev:module:create'
       name 'Create and register a new magento module.'
+      notes <<-'NOTE'
+#### Usage:
+
+```
+ dev:module:create [options] vendorNamespace moduleName [codePool]
+```
+
+#### Arguments:
+
+```
+ vendorNamespace       Namespace (your company prefix)
+ moduleName            Name of your module.
+ codePool              Codepool (local,community) (default: "local")
+```
+
+#### Options:
+
+```
+ --add-blocks          Adds blocks
+ --add-helpers         Adds helpers
+ --add-models          Adds models
+ --add-setup           Adds SQL setup
+ --add-all             Adds blocks, helpers and models
+ --modman              Create all files in folder with a modman file.
+ --add-readme          Adds a readme.md file to generated module
+ --add-composer        Adds a composer.json file to generated module
+ --author-name         Author for readme.md or composer.json
+ --author-email        Author for readme.md or composer.json
+ --description         Description for readme.md or composer.json
+```
+      NOTE
     end
 
     entry do
@@ -488,7 +519,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - eav'
+    id 'EAV'
 
     entry do
       command 'eav:attribute:list'
@@ -507,7 +538,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - extension'
+    id 'Extension'
 
     entry do
       command 'extension:download'
@@ -541,7 +572,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - index'
+    id 'Index'
 
     entry do
       command 'index:list'
@@ -560,7 +591,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - local-config'
+    id 'Local-config'
 
     entry do
       command 'local-config:generate'
@@ -569,7 +600,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - media'
+    id 'Media'
 
     entry do
       command 'media:dump'
@@ -578,7 +609,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - script'
+    id 'Script'
 
     entry do
       command 'script:repo:list'
@@ -592,7 +623,7 @@ version: `1.91.0`
   end
 
   category do
-    id 'Argument - sys'
+    id 'System'
 
     entry do
       command 'sys:check'
