@@ -11,9 +11,6 @@ Github: [netz98/n98-magerun](https://github.com/netz98/n98-magerun)
 version: `1.91.0`
   NOTE
 
-
-
-
   category do
     id 'Usage'
     entry do
@@ -480,6 +477,23 @@ version: `1.91.0`
     entry do
       command 'dev:template-hints'
       name 'Toggles template hints'
+      notes <<-'NOTE'
+#### Usage:
+```
+ dev:template-hints [--on] [--off] [store]
+```
+
+#### Arguments:
+```
+ store                 Store code or ID
+```
+
+#### Options:
+```
+ --on                  Switch on
+ --off                 Switch off
+```
+      NOTE
     end
 
     entry do
