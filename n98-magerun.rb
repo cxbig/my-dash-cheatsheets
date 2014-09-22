@@ -269,6 +269,19 @@ version: `1.91.0`
     entry do
       command 'customer:change-password'
       name 'Changes the password of a customer.'
+      notes <<-'NOTE'
+#### Usage:
+```
+ customer:change-password [email] [password] [website]
+```
+
+#### Arguments:
+```
+ email                 Email
+ password              Password
+ website               Website of the customer
+```
+      NOTE
     end
 
     entry do
