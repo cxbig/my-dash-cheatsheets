@@ -1,4 +1,5 @@
 *.docset
+*.private.rb
 
 /.idea/
 /log/
