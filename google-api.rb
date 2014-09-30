@@ -8,9 +8,14 @@ This cheatsheet contains everything for Google API
   NOTE
 
   category do
-    id 'Map'
+    id 'Map | Basis'
+  end
+
+  category do
+    id 'Map | Utilities'
+
     entry do
-      name 'Add Google Map autocomplete function to input box'
+      name '### Bind Google Map auto-complete function to input box'
       notes <<-'NOTE'
 #### Add Google Map API script in head
 ```
