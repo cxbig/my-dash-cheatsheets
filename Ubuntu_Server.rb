@@ -83,6 +83,36 @@ dpkg --get-selections
   end
 
   category do
+    id 'PPA Management'
+
+    entry do
+      name '### PPA | Add & remove PPA library'
+      notes <<-'NOTE'
+#### Add a ppa library
+```
+sudo apt-get-repository ppa:user/app
+```
+
+#### Remove a ppa library itself only
+```
+sudo apt-get-repository --remove ppa:user/app
+```
+
+#### Remove a ppa library & installed applications
+##### First, you need `ppa-purge` tool
+``` 
+sudo apt-get install -y ppa-purge
+```
+
+##### Then, remove the ppa library & installed applications
+```
+sudo ppa-purge ppa:user/app
+```
+      NOTE
+    end
+  end
+
+  category do
     id 'System'
 
     entry do
