@@ -13,6 +13,22 @@ version: `1.91.0`
 
   category do
     id 'Usage'
+
+    entry do
+      name 'Download'
+      notes <<-'NOTE'
+#### Use wget
+```
+wget https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar
+```
+
+#### Use curl
+```
+curl -o n98-magerun.phar https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar
+```
+      NOTE
+    end
+
     entry do
       name 'Usage'
       notes <<-'NOTE'

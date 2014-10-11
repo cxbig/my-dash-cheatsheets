@@ -10,11 +10,29 @@ This is collection of Magento, list all shortcuts
   category do
     id 'MySQL snapshot'
 
-    entry do
-      name '### Base URL'
+    entry do 
+      name '### Check base URL'
       notes <<-'NOTE'
 ```
-UPDATE `core_config_data` SET `value` = '{{base_url}}' WHERE `scope` = 'default' AND `path` in ('web/unsecure/base_url', 'web/secure/base_url');
+SELECT 
+    *
+FROM
+    `core_config_data`
+WHERE
+    `path` IN ('web/unsecure/base_url' , 'web/secure/base_url');
+```
+      NOTE
+    end
+
+    entry do
+      name '### Update base URL'
+      notes <<-'NOTE'
+```
+UPDATE `core_config_data` 
+SET 
+    `value` = '{{base_url}}'
+WHERE
+    `path` IN ('web/unsecure/base_url' , 'web/secure/base_url');
 ```
       NOTE
     end
@@ -32,12 +50,22 @@ VALUES
 
 #### Open hints
 ```
-UPDATE `core_config_data` SET `value` = 1 WHERE `scope` = 'default' AND `scope_id` = 0 AND path IN ('dev/debug/template_hints', 'dev/debug/template_hints_blocks');
+UPDATE `core_config_data` 
+SET 
+    `value` = 1
+WHERE
+    `scope` = 'default' AND `scope_id` = 0
+        AND path IN ('dev/debug/template_hints' , 'dev/debug/template_hints_blocks');
 ```
 
 #### Close hints
 ```
-UPDATE `core_config_data` SET `value` = 0 WHERE `scope` = 'default' AND `scope_id` = 0 AND path IN ('dev/debug/template_hints', 'dev/debug/template_hints_blocks');
+UPDATE `core_config_data` 
+SET 
+    `value` = 0
+WHERE
+    `scope` = 'default' AND `scope_id` = 0
+        AND path IN ('dev/debug/template_hints' , 'dev/debug/template_hints_blocks');
 ```
       NOTE
     end
