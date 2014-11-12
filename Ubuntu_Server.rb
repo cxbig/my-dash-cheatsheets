@@ -134,6 +134,27 @@ uptime
 ```
       NOTE
     end
+
+    entry do 
+      name '### System | Hard-drive free space'
+      notes <<-'NOTE'
+```
+df -h
+```
+      NOTE
+    end
+
+    entry do
+      name '### System | Folder size'
+      notes <<-'NOTE'
+```
+du
+  -h    // human readable
+  -a    // include files
+  -s    // summary only
+```
+      NOTE
+    end
   end
 
   category do
@@ -144,6 +165,15 @@ uptime
       notes <<-'NOTE'
 ```
 adduser cxbig
+```
+      NOTE
+    end
+
+    entry do
+      name '### User | Add user to sudo group'
+      notes <<-'NOTE'
+```
+usermod -a -G sudo cxbig
 ```
       NOTE
     end
