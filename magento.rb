@@ -10,20 +10,12 @@ This is collection of Magento, list all shortcuts
   category do
     id 'MySQL snapshot'
 
-    entry do 
-      name '### Check base URL'
-      notes <<-'NOTE'
-```
-SELECT * FROM `core_config_data` WHERE `path` IN ('web/unsecure/base_url' , 'web/secure/base_url');
-```
-      NOTE
-    end
-
     entry do
-      name '### Update base URL'
+      name '### Common initialize'
       notes <<-'NOTE'
 ```
-UPDATE `core_config_data` SET `value` = '{{base_url}}' WHERE `path` IN ('web/unsecure/base_url' , 'web/secure/base_url');
+UPDATE `core_config_data` SET `value` = '{{base_url}}' WHERE `path` LIKE 'web%base_url';
+UPDATE `core_config_data` SET `value` = 'dev@cxbig.info' WHERE `value` LIKE '%@%';
 ```
       NOTE
     end
@@ -31,19 +23,16 @@ UPDATE `core_config_data` SET `value` = '{{base_url}}' WHERE `path` IN ('web/uns
     entry do
       name '### Admin template hints'
       notes <<-'NOTE'
-#### Create hints
-```
-INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`) VALUES ('default', 0, 'dev/debug/template_hints', 1), ('default', 0, 'dev/debug/template_hints_blocks', 1);
-```
-
 #### Open hints
 ```
-UPDATE `core_config_data` SET `value` = 1 WHERE `scope` = 'default' AND `scope_id` = 0 AND path IN ('dev/debug/template_hints' , 'dev/debug/template_hints_blocks');
+INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints', 1 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
+INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints_blocks', 1 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
 
 #### Close hints
 ```
-UPDATE `core_config_data` SET `value` = 0 WHERE `scope` = 'default' AND `scope_id` = 0 AND path IN ('dev/debug/template_hints' , 'dev/debug/template_hints_blocks');
+INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints', 0 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
+INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints_blocks', 0 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
       NOTE
     end
