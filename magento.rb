@@ -18,6 +18,7 @@ This is collection of Magento, list all shortcuts
 UPDATE `core_config_data` SET `value` = '{{base_url}}' WHERE `path` LIKE 'web%base_url';
 UPDATE `core_config_data` SET `value` = 'dev@cxbig.info' WHERE `value` LIKE '%@%';
 UPDATE `core_config_data` SET `value` = '86400' WHERE `path` = 'admin/security/session_cookie_lifetime';
+UPDATE `core_config_data` SET `value` = 1 WHERE `path` = 'design/head/demonotice';
 ```
 
 #### Admin security
