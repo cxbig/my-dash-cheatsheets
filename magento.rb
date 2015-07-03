@@ -14,7 +14,7 @@ This is collection of Magento, list all shortcuts
       name '### Common initialize'
       notes <<-'NOTE'
 #### Base URL
-```
+```sql
 UPDATE `core_config_data` SET `value` = '{{base_url}}' WHERE `path` LIKE 'web%base_url';
 UPDATE `core_config_data` SET `value` = 'dev@cxbig.info' WHERE `value` LIKE '%@%';
 UPDATE `core_config_data` SET `value` = '86400' WHERE `path` = 'admin/security/session_cookie_lifetime';
@@ -22,7 +22,7 @@ UPDATE `core_config_data` SET `value` = 1 WHERE `path` = 'design/head/demonotice
 ```
 
 #### Admin security
-```
+```sql
 INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`) VALUES ('default', 0, 'admin/security/session_cookie_lifetime', 8640000), ('default', 0, 'admin/security/lockout_failures', 0), ('default', 0, 'admin/security/password_lifetime', 36500) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
       NOTE
@@ -32,13 +32,13 @@ INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`) VALUES ('d
       name '### Admin template hints'
       notes <<-'NOTE'
 #### Open hints
-```
+```sql
 INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints', 1 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints_blocks', 1 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
 
 #### Close hints
-```
+```sql
 INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints', 0 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints_blocks', 0 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
@@ -75,7 +75,7 @@ Mage::getSingleton('adminhtml/session_quote')->getQuote();
 
 For each field, you can add a Validation definition
 
-```
+```xml
 <validate>...</validate>
 ```
       NOTE
@@ -103,7 +103,7 @@ _to be continue..._
     entry do
       name '### Product list with attribute'
       notes <<-'NOTE'
-```
+```sql
 SELECT
   `cpe`.`entity_id` 'product id',
   `cpe`.`sku` 'sku',
@@ -158,6 +158,113 @@ WHERE `cpe`.`entity_id` IN ( product_ids );
 ```
       NOTE
     end
+
+    entry do
+      name '### Configurable product super attribute check'
+      notes <<-'NOTE'
+```sql
+SELECT
+  `p`.`entity_id`,
+  `p`.`sku`,
+  concat(
+      if(`p`.`has_options` = 1, 'Y', 'N'),
+      '|',
+      if(`p`.`required_options` = 1, 'Y', 'N')
+  ) 'has_and_required_options',
+  concat('[', `se`.`attribute_set_id`, ']', `se`.`attribute_set_name`),
+  group_concat(
+      concat('[', `su`.`attribute_id`, ']', `a`.`attribute_code`)
+      ORDER BY `su`.`attribute_id` ASC
+      SEPARATOR ' | '
+  ) 'super_attributes'
+FROM
+  `catalog_product_super_attribute` `su`
+  JOIN
+  `catalog_product_entity` `p`
+    ON `p`.`entity_id` = `su`.`product_id`
+      AND `p`.`type_id` = 'configurable'
+  JOIN
+  `eav_attribute_set` `se`
+    ON `se`.`attribute_set_id` = `p`.`attribute_set_id`
+  JOIN
+  `eav_attribute` `a`
+    ON `a`.`attribute_id` = `su`.`attribute_id`
+WHERE
+  `su`.`product_id` IN ( ** your product ids ** )
+GROUP BY
+  `su`.`product_id`
+ORDER BY
+  `p`.`attribute_set_id` ASC;
+```
+      NOTE
+    end
+
+    entry do
+      name '### Find product by url_key'
+      notes <<-'NOTE'
+```sql
+SELECT
+  `p`.`entity_id`,
+  `p`.`sku`,
+  `u`.`store_id`,
+  `u`.`value` 'url_key'
+FROM
+  `catalog_product_entity_varchar` `u`
+  JOIN
+  `catalog_product_entity` `p`
+    ON `p`.`entity_id` = `u`.`entity_id`
+WHERE
+  `u`.`value` LIKE '% **your url_key** %';
+```
+      NOTE
+    end
+
+    entry do
+      name '### Check product special price'
+      notes <<-'NOTE'
+```sql
+SELECT
+  `p`.`entity_id`                      AS 'ID',
+  `p`.`sku`                            AS 'SKU',
+  `price_decimal`.`value`              AS 'Price',
+  `special_price_decimal`.`value`      AS 'Special Price',
+  `special_from_date_datetime`.`value` AS 'Special Price From Date',
+  `special_to_date_datetime`.`value`   AS 'Special Price To Date'
+
+FROM `catalog_product_entity` `p`
+  # Join price
+  JOIN `catalog_product_entity_decimal` AS `price_decimal`
+    ON `price_decimal`.`entity_id` = `p`.`entity_id` AND `price_decimal`.`store_id` = 0
+  JOIN `eav_attribute` AS `price_eav`
+    ON `price_eav`.`attribute_id` = `price_decimal`.`attribute_id` AND
+       `price_eav`.`attribute_code` = 'price'
+
+  # Join special_price
+  JOIN `catalog_product_entity_decimal` AS `special_price_decimal`
+    ON `special_price_decimal`.`entity_id` = `p`.`entity_id` AND `special_price_decimal`.`store_id` = 0
+  JOIN `eav_attribute` AS `special_price_eav`
+    ON `special_price_eav`.`attribute_id` = `special_price_decimal`.`attribute_id` AND
+       `special_price_eav`.`attribute_code` = 'special_price'
+
+  # Join special_from_date
+  JOIN `catalog_product_entity_datetime` AS `special_from_date_datetime`
+    ON `special_from_date_datetime`.`entity_id` = `p`.`entity_id` AND `special_from_date_datetime`.`store_id` = 0
+  JOIN `eav_attribute` AS `special_from_date_eav`
+    ON `special_from_date_eav`.`attribute_id` = `special_from_date_datetime`.`attribute_id` AND
+       `special_from_date_eav`.`attribute_code` = 'special_from_date'
+
+  # Join special_to_date
+  JOIN `catalog_product_entity_datetime` AS `special_to_date_datetime`
+    ON `special_to_date_datetime`.`entity_id` = `p`.`entity_id` AND `special_to_date_datetime`.`store_id` = 0
+  JOIN `eav_attribute` AS `special_to_date_eav`
+    ON `special_to_date_eav`.`attribute_id` = `special_to_date_datetime`.`attribute_id` AND
+       `special_to_date_eav`.`attribute_code` = 'special_to_date'
+
+WHERE `p`.`entity_id` = ?;
+```
+      NOTE
+    end
+
   end
 
   category do
