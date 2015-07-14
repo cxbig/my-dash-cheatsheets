@@ -20,7 +20,7 @@ UPDATE `core_config_data` SET `value` = 'dev@cxbig.info' WHERE `value` LIKE '%@%
 UPDATE `core_config_data` SET `value` = '86400' WHERE `path` = 'admin/security/session_cookie_lifetime';
 UPDATE `core_config_data` SET `value` = 1 WHERE `path` = 'design/head/demonotice';
 UPDATE `core_cache_option` SET `value` = 0;
-UPDATE `admin_user` SET `password` = 'cff47226563c170d12b798dc0949b704fdee59d0646d47678efaf61e98862028:lj' WHERE `username` = 'admin';
+UPDATE `admin_user` SET `password` = 'cff47226563c170d12b798dc0949b704fdee59d0646d47678efaf61e98862028:lj' WHERE `username` = 'admin'; -- admin password is 'admin123'
 ```
 
 #### Admin security
