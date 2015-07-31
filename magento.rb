@@ -269,6 +269,42 @@ WHERE `p`.`entity_id` = ?;
 
   end
 
+
+  category do
+    id 'PHP version issue'
+
+    entry do
+      name '### iconv\_set\_encoding error after PHP 5.6'
+      notes <<-'MD'
+```php
+// UTF-8
+
+if (PHP_VERSION_ID < 50600) {
+    iconv_set_encoding('internal_encoding', 'UTF-8');
+} else {
+    ini_set('global_charset', 'UTF-8');
+}
+
+// $origenc
+
+if (PHP_VERSION_ID < 50600) {
+    iconv_set_encoding('internal_encoding', $origenc);
+} else {
+    ini_set('global_charset', $origenc);
+}
+
+// $oenc
+
+if (PHP_VERSION_ID < 50600) {
+    iconv_set_encoding('internal_encoding', $oenc);
+} else {
+    ini_set('global_charset', $oenc);
+}
+```
+      MD
+    end
+  end
+
   category do
     id 'Extension'
 
