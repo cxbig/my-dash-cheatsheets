@@ -267,6 +267,28 @@ WHERE `p`.`entity_id` = ?;
       NOTE
     end
 
+    entry do
+      name '### Cron Schedule Statistic'
+      notes <<-'MD'
+#### Run this SQL to show each cron job execution status
+
+```sql
+SELECT
+  `job_code` 'job code',
+  concat(floor(round(avg(UNIX_TIMESTAMP(`finished_at`) - UNIX_TIMESTAMP(`executed_at`))) / 60), ':', lpad(round(avg(UNIX_TIMESTAMP(`finished_at`) - UNIX_TIMESTAMP(`executed_at`))) % 60, 2, 0)) 'Average Execution Time (sec)',
+  count(`executed_at`) 'executed',
+  count(`finished_at`) 'finished',
+  concat(round(count(`finished_at`) / count(`executed_at`) * 100, 2), ' %') 'successful rate'
+FROM
+  `cron_schedule`
+GROUP BY
+  `job_code`
+ORDER BY
+  `job_code`;
+```
+      MD
+    end
+
   end
 
 
