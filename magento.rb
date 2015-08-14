@@ -275,7 +275,7 @@ WHERE `p`.`entity_id` = ?;
 ```sql
 SELECT
   `job_code` 'job code',
-  concat(floor(round(avg(UNIX_TIMESTAMP(`finished_at`) - UNIX_TIMESTAMP(`executed_at`))) / 60), ':', lpad(round(avg(UNIX_TIMESTAMP(`finished_at`) - UNIX_TIMESTAMP(`executed_at`))) % 60, 2, 0)) 'Average Execution Time (sec)',
+  concat(floor(round(avg(UNIX_TIMESTAMP(`finished_at`) - UNIX_TIMESTAMP(`executed_at`))) / 60), ':', lpad(round(avg(UNIX_TIMESTAMP(`finished_at`) - UNIX_TIMESTAMP(`executed_at`))) % 60, 2, 0)) 'Average Execution Time (min:sec)',
   count(`executed_at`) 'executed',
   count(`finished_at`) 'finished',
   concat(round(count(`finished_at`) / count(`executed_at`) * 100, 2), ' %') 'successful rate'
