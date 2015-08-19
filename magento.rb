@@ -11,20 +11,34 @@ This is collection of Magento, list all shortcuts
     id 'MySQL snapshot'
 
     entry do
-      name '### Common initialize'
+      name '### Initialize'
       notes <<-'NOTE'
 #### Base URL
 ```sql
 UPDATE `core_config_data` SET `value` = '{{base_url}}' WHERE `path` LIKE 'web%base_url';
-UPDATE `core_config_data` SET `value` = 'dev@cxbig.info' WHERE `value` LIKE '%@%';
-UPDATE `core_config_data` SET `value` = '86400' WHERE `path` = 'admin/security/session_cookie_lifetime';
+```
+
+#### Demo store notification
+```sql
 UPDATE `core_config_data` SET `value` = 1 WHERE `path` = 'design/head/demonotice';
+```
+
+#### Email sender & receiver
+```sql
+UPDATE `core_config_data` SET `value` = 'dev@cxbig.info' WHERE `value` LIKE '%@%';
+```
+
+#### Cache system
+```sql
 UPDATE `core_cache_option` SET `value` = 0;
-UPDATE `admin_user` SET `password` = 'cff47226563c170d12b798dc0949b704fdee59d0646d47678efaf61e98862028:lj' WHERE `username` = 'admin'; -- admin password is 'admin123'
 ```
 
 #### Admin security
 ```sql
+-- admin password is 'admin123'
+UPDATE `admin_user` SET `password` = 'cff47226563c170d12b798dc0949b704fdee59d0646d47678efaf61e98862028:lj' WHERE `username` = 'admin';
+
+-- enlarge admin session time & close force admin password lifetime
 INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`) VALUES ('default', 0, 'admin/security/session_cookie_lifetime', 8640000), ('default', 0, 'admin/security/lockout_failures', 0), ('default', 0, 'admin/security/password_lifetime', 36500) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
       NOTE
@@ -45,6 +59,16 @@ INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'webs
 INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints_blocks', 0 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
       NOTE
+    end
+
+    entry do
+      name '### Data Analysis'
+      notes <<-'MD'
+#### Cron Schedule status
+```sql
+SELECT date_format(`c`.`scheduled_at`, '%Y-%m') 'month', `c`.`job_code` 'job code', count(`c`.`scheduled_at`) 'scheduled count', count(`c`.`finished_at`) 'finished count', concat(round(count(`c`.`finished_at`) / count(`c`.`scheduled_at`) * 100, 2), ' %') 'finished rate' FROM `cron_schedule` `c` GROUP BY date(`c`.`scheduled_at`), `c`.`job_code` ORDER BY date(`c`.`scheduled_at`) ASC, `c`.`job_code` ASC;
+```
+      MD
     end
   end
 
