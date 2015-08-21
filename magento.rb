@@ -36,10 +36,17 @@ UPDATE `core_cache_option` SET `value` = 0;
 #### Admin security
 ```sql
 -- admin password is 'admin123'
-UPDATE `admin_user` SET `password` = 'cff47226563c170d12b798dc0949b704fdee59d0646d47678efaf61e98862028:lj' WHERE `username` = 'admin';
+UPDATE `admin_user`
+SET `password` = 'cff47226563c170d12b798dc0949b704fdee59d0646d47678efaf61e98862028:lj'
+WHERE `username` = 'admin';
 
 -- enlarge admin session time & close force admin password lifetime
-INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`) VALUES ('default', 0, 'admin/security/session_cookie_lifetime', 8640000), ('default', 0, 'admin/security/lockout_failures', 0), ('default', 0, 'admin/security/password_lifetime', 36500) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
+INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`)
+VALUES
+  ('default', 0, 'admin/security/session_cookie_lifetime', 8640000),
+  ('default', 0, 'admin/security/lockout_failures', 0),
+  ('default', 0, 'admin/security/password_lifetime', 36500)
+ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
       NOTE
     end
@@ -49,14 +56,32 @@ INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`) VALUES ('d
       notes <<-'NOTE'
 #### Open hints
 ```sql
-INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints', 1 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
-INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints_blocks', 1 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
+INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`)
+  SELECT 'websites', `website_id`, 'dev/debug/template_hints', 1
+  FROM `core_store`
+  WHERE `website_id` <> 0
+ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
+
+INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`)
+  SELECT 'websites', `website_id`, 'dev/debug/template_hints_blocks', 1
+  FROM `core_store`
+  WHERE `website_id` <> 0
+ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
 
 #### Close hints
 ```sql
-INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints', 0 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
-INSERT INTO core_config_data (`scope`, `scope_id`, `path`, `value`) SELECT 'websites', website_id, 'dev/debug/template_hints_blocks', 0 FROM core_store WHERE website_id <> 0 ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
+INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`)
+  SELECT 'websites', `website_id`, 'dev/debug/template_hints', 0
+  FROM `core_store`
+  WHERE `website_id` <> 0
+ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
+
+INSERT INTO `core_config_data` (`scope`, `scope_id`, `path`, `value`)
+  SELECT 'websites', `website_id`, 'dev/debug/template_hints_blocks', 0
+  FROM `core_store`
+  WHERE `website_id` <> 0
+ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
 ```
       NOTE
     end
